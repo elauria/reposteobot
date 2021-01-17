@@ -9,6 +9,11 @@ const base = `https://api.telegram.org/bot${token}`;
 const bot = new Telegraf(token)
 bot.use(session())
 
+const isFromEruditos = (ctx) => {
+	return true;
+	// return ctx.update.message.chat.id === groupChatId;
+}
+
 const replyIfRepost = async (ctx, m) => {
 	try {
 		const hash = md5(m);
@@ -24,7 +29,6 @@ const replyIfRepost = async (ctx, m) => {
 				}
 			});
 			const {message_id} = ctx.message;
-			console.log(message_id)
 			return ctx.replyWithPhoto(gif.data.data[0].url, {reply_to_message_id: message_id});
 		}
 		ctx.session.md5s.push(hash);	
@@ -35,6 +39,7 @@ const replyIfRepost = async (ctx, m) => {
 
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.on('text', (ctx) => {
+	if (!isFromEruditos(ctx)) return;
 	const {text} = ctx.update.message;
 	const ix = text.indexOf('http');
 	if (ix === -1) return;
@@ -44,7 +49,7 @@ bot.on('text', (ctx) => {
 })
 bot.on('photo', async (ctx) => {
 	try {
-		if (!ctx.session) ctx.session = {md5s: []};
+		if (!isFromEruditos(ctx)) return;
 		const {file_id} = ctx.update.message.photo.pop();
 		const {data} = await axios.get(`${base}/getFile`, {params: {file_id:file_id}});
 		const photo = await axios.get(`https://api.telegram.org/file/bot${token}/${data.result.file_path}`);
