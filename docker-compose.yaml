@@ -4,5 +4,7 @@ services:
     image: elauria/reposteobot
     container_name: reposteobot
     hostname: reposteobot
+    mem_limit: 512M
+    cpus: 0.5
     env_file:
       .env
