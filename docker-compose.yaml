@@ -1,0 +1,8 @@
+version: "3"
+services:
+  reposteobot:
+    image: elauria/reposteobot
+    container_name: reposteobot
+    hostname: reposteobot
+    env_file:
+      .env
