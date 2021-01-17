@@ -10,6 +10,7 @@ const bot = new Telegraf(token)
 bot.use(session())
 
 const isFromEruditos = (ctx) => {
+	console.log(ctx.update.meesage)
 	return true;
 	// return ctx.update.message.chat.id === groupChatId;
 }
