@@ -4,6 +4,7 @@ const md5 = require('md5');
 
 const token = process.env.BOT_TOKEN;
 const giphyApiKey = process.env.GIPHY_API_KEY;
+const groupChatId = process.env.GROUP_ID;
 const base = `https://api.telegram.org/bot${token}`;
 
 const bot = new Telegraf(token)
@@ -11,7 +12,6 @@ bot.use(session({
   makeKey: (ctx) => ctx.chat.id
 }))
 
-const groupChatId = -486491447;
 
 const isFromEruditos = (ctx) => {
 	return ctx.update.message.chat.id === groupChatId;
