@@ -9,7 +9,7 @@ const base = `https://api.telegram.org/bot${token}`;
 
 const bot = new Telegraf(token)
 bot.use(session({
-  makeKey: (ctx) => ctx.chat.id
+  getSessionKey: (ctx) => ctx.chat.id,
 }))
 
 
