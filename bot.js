@@ -7,12 +7,14 @@ const giphyApiKey = process.env.GIPHY_API_KEY;
 const base = `https://api.telegram.org/bot${token}`;
 
 const bot = new Telegraf(token)
-bot.use(session())
+bot.use(session({
+  makeKey: (ctx) => ctx.chat.id
+}))
+
+const groupChatId = -486491447;
 
 const isFromEruditos = (ctx) => {
-	console.log('DEBUG', ctx.update)
-	return true;
-	// return ctx.update.message.chat.id === groupChatId;
+	return ctx.update.message.chat.id === groupChatId;
 }
 
 const replyIfRepost = async (ctx, m) => {
@@ -44,7 +46,6 @@ bot.on('text', (ctx) => {
 	const {text} = ctx.update.message;
 	const ix = text.indexOf('http');
 	if (ix === -1) return;
-	if (!ctx.session) ctx.session = {md5s: []};
 	const url = text.slice(ix).split(' ')[0];
 	replyIfRepost(ctx, url);
 })
