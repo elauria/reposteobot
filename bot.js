@@ -14,7 +14,8 @@ bot.use(session({
 
 
 const isFromEruditos = (ctx) => {
-	return ctx.update.message.chat.id === groupChatId;
+	// return ctx.update.message.chat.id === groupChatId;
+	return true;
 }
 
 const replyIfRepost = async (ctx, m) => {
