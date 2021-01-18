@@ -3,7 +3,6 @@ const axios = require('axios');
 const md5 = require('md5');
 
 const token = process.env.BOT_TOKEN;
-const giphyApiKey = process.env.GIPHY_API_KEY;
 const groupChatId = process.env.GROUP_ID;
 const base = `https://api.telegram.org/bot${token}`;
 
@@ -24,16 +23,8 @@ const replyIfRepost = async (ctx, m) => {
 		if (!ctx.session)
 			ctx.session = {md5s: []};
 		if (ctx.session.md5s.indexOf(hash) !== -1) {
-			const gif = await axios.get(`https://api.giphy.com/v1/gifs/search`, {
-				params: {
-					'api_key': giphyApiKey,
-					'q': 'warning',
-					'limit': 1,
-					'offset': Math.floor(Math.random()*100),
-				}
-			});
 			const {message_id} = ctx.message;
-			return ctx.replyWithPhoto(gif.data.data[0].url, {reply_to_message_id: message_id});
+			return ctx.reply('Es repetido puñeeeetas 🎶', {reply_to_message_id: message_id});
 		}
 		ctx.session.md5s.push(hash);	
 	} catch (err) {
